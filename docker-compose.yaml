@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:16.3
+    container_name: habibi
+    ports:
+      - "5498:5432"
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+volumes:
+  db_data:
+    driver: local
