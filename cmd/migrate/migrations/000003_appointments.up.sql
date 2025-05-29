@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS appointments(
     id SERIAL PRIMARY KEY,
-    DATE TIMESTAMP NOT NULL,
+    date TIMESTAMP NOT NULL,
     client_id INT NOT NULL,
     service_id INT NOT NULL,
     status VARCHAR(20) DEFAULT 'pending',
