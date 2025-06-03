@@ -1,0 +1,51 @@
+<div
+  class="shadow-lg rounded-lg overflow-hidden mx-4 md:mx-10 min-h-[900px] mt-12"
+  style="margin-top: 10rem"
+>
+  <div class="flex items-center justify-center w-full">
+    <h2 style="font-size: 2rem; font-family: 'Lobster'">Citas</h2>
+  </div>
+  <table class="w-full table-fixed mt-12">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">
+          Nombre
+        </th>
+        <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">
+          Correo
+        </th>
+        <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">
+          Teléfono
+        </th>
+        <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">
+          Estado
+        </th>
+      </tr>
+    </thead>
+    <tbody class="bg-white">
+      @for (a of fakeAppointments; track $index) {
+      <tr>
+        <td class="py-4 px-6 border-b border-gray-200">{{ a.name }}</td>
+        <td class="py-4 px-6 border-b border-gray-200 truncate">
+          {{ a.email }}
+        </td>
+        <td class="py-4 px-6 border-b border-gray-200">{{ a.phone }}</td>
+        <td class="py-4 px-6 border-b border-gray-200">
+          @if (a.status === 'active') {
+          <span class="bg-green-500 text-white py-1 px-2 rounded-full text-xs"
+            >Activa</span
+          >
+          } @else {
+          <span class="bg-red-500 text-white py-1 px-2 rounded-full text-xs"
+            >Inactiva</span
+          >
+          }
+        </td>
+      </tr>
+
+      }
+
+      <!-- Add more rows here -->
+    </tbody>
+  </table>
+</div>
