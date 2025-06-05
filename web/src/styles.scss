@@ -70,3 +70,8 @@
   color: #000;
   /*Set to match the Tailwind colour you want the active one to be */
 }
+
+.background-i {
+  background-image: url('/img/background-1.jpeg');
+  background-size: cover;
+}
