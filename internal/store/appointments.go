@@ -3,6 +3,7 @@ package store
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"time"
 )
 
@@ -80,9 +81,42 @@ func (s *AppointmentsStore) GetByID(ctx context.Context, appointmentID int64) (*
 	WHERE id = $1;
 	`
 
-	return nil, nil
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	var appointment Appointments
+	err := s.db.QueryRowContext(ctx, query, appointmentID).Scan(
+		&appointment.ID,
+		&appointment.Date,
+		&appointment.ClientID,
+		&appointment.ServiceID,
+		&appointment.Status,
+	)
+
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, ErrNotFound
+		default:
+			return nil, err
+		}
+
+	}
+
+	return &appointment, nil
 }
 
 func (s *AppointmentsStore) Delete(ctx context.Context, appointmentID int64) error {
+	query := `
+	DELETE FROM appointments WHERE id = $1;
+	`
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	_, err := s.db.ExecContext(ctx, query, appointmentID)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
