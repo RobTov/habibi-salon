@@ -25,8 +25,16 @@ type Storage struct {
 		Update(context.Context, *Clients) error
 		Delete(context.Context, int64) error
 	}
-	Services interface{}
-	Stock    interface{}
+	Services interface {
+		GetAll(context.Context) ([]Services, error)
+		Create(context.Context, *Services) error
+		Delete(context.Context, int64) error
+	}
+	Products interface {
+		GetAll(context.Context) ([]Products, error)
+		Create(context.Context, *Products) error
+	}
+	Stock interface{}
 }
 
 func NewPostgresStorage(db *sql.DB) Storage {
@@ -34,6 +42,7 @@ func NewPostgresStorage(db *sql.DB) Storage {
 		Appointments: &AppointmentsStore{db},
 		Clients:      &ClientsStore{db},
 		Services:     &ServicesStore{db},
+		Products:     &ProductsStore{db},
 		Stock:        &StockStore{db},
 	}
 }
