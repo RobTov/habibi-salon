@@ -8,6 +8,7 @@ import (
 	"github.com/RobTov/habibi-salon/internal/store"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
 )
 
 type application struct {
@@ -36,6 +37,17 @@ func (app *application) mount() http.Handler {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.Timeout(time.Second * 60))
+	// CORS
+	r.Use(cors.Handler(cors.Options{
+		// TODO: change this for env variables
+		AllowedOrigins: []string{"https://*", "http://*"},
+		// AllowedOriginFunc: func(r *http.Request, origin string) bool { return true },
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           30,
+	}))
 
 	r.Route("/v1", func(r chi.Router) {
 		r.Get("/health", app.healthCheckHandler)
@@ -49,8 +61,8 @@ func (app *application) mount() http.Handler {
 
 		r.Route("/services", func(r chi.Router) {
 			r.Route("/", func(r chi.Router) {
-				// r.Get("/", app.getServiceHandler)
-				// r.Post("/", app.createServiceHandler)
+				r.Get("/", app.getServiceHandler)
+				r.Post("/", app.createServiceHandler)
 			})
 		})
 	})
