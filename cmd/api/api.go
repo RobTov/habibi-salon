@@ -59,7 +59,12 @@ func (app *application) mount() http.Handler {
 
 		})
 
-		r.Route("/services", func(r chi.Router) {})
+		r.Route("/services", func(r chi.Router) {
+			r.Route("/", func(r chi.Router) {
+				// r.Get("/", app.getServiceHandler)
+				// r.Post("/", app.createServiceHandler)
+			})
+		})
 	})
 
 	return r
