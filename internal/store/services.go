@@ -10,7 +10,7 @@ type Services struct {
 	Name        string  `json:"name"`
 	Description string  `json:"description"`
 	Price       float32 `json:"price"`
-	IsActive    string  `json:"is_active"`
+	IsActive    bool    `json:"is_active"`
 }
 
 type ServicesStore struct {
