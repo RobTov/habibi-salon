@@ -1,10 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { RestService } from '../rest.service';
-import {
-  ICreateClientsModel,
-  ClientsModel,
-} from '../../models/clients.model';
+import { ICreateClientsModel, ClientsModel } from '../../models/clients.model';
 
 @Injectable({
   providedIn: 'root',
