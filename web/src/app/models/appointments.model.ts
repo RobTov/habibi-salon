@@ -10,3 +10,10 @@ export interface AppointmentsModel {
   service_id: number;
   status: AppointmentStatus;
 }
+
+export interface ICreateAppointmentsModel {
+  id: number;
+  date: string;
+  service_id: number;
+  status: AppointmentStatus;
+}
