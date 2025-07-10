@@ -1,6 +1,6 @@
 # Habibi Salon
 
-## A system to manage everything in a beauty salon
+## A system to manage everything in a beauty salon.
 
 ## Table of Contents
 
@@ -9,7 +9,7 @@
 
 ## Installation
 
-1. Clone the repository:
+1. Clone the repository: 
 
 ```bash
  git clone https://github.com/RobTov/habibi-salon
