@@ -2,6 +2,8 @@ package main
 
 import (
 	"net/http"
+
+	"github.com/RobTov/habibi-salon/internal/store"
 )
 
 type CreateClientPayload struct {
@@ -13,4 +15,31 @@ type CreateClientPayload struct {
 
 func (app *application) getClientHandler(w http.ResponseWriter, r *http.Request) {
 	// clients, err := app.store.Clients.Ge
+}
+
+func (app *application) createClientHandler(w http.ResponseWriter, r *http.Request) {
+	var payload CreateClientPayload
+	if err := readJSON(w, r, &payload); err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	if err := Validate.Struct(payload); err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	client := &store.Clients{
+		Name:    payload.Name,
+		Email:   payload.Email,
+		Phone:   payload.Phone,
+		Address: payload.Address,
+	}
+
+	ctx := r.Context()
+	if err := app.store.Clients.Create(ctx, client); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
 }

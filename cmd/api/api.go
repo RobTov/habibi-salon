@@ -52,11 +52,17 @@ func (app *application) mount() http.Handler {
 	r.Route("/v1", func(r chi.Router) {
 		r.Get("/health", app.healthCheckHandler)
 		r.Route("/appointments", func(r chi.Router) {
-
+			r.Route("/", func(r chi.Router) {
+				r.Get("", app.getAppointmentHandler)
+				r.Post("/", app.createAppointmentHandler)
+			})
 		})
 
 		r.Route("/clients", func(r chi.Router) {
-
+			r.Route("/", func(r chi.Router) {
+				r.Get("/", app.getClientHandler)
+				r.Post("/", app.createClientHandler)
+			})
 		})
 
 		r.Route("/services", func(r chi.Router) {
