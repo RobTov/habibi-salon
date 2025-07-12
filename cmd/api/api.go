@@ -54,6 +54,7 @@ func (app *application) mount() http.Handler {
 		r.Route("/appointments", func(r chi.Router) {
 			r.Route("/", func(r chi.Router) {
 				r.Get("", app.getAppointmentHandler)
+				r.Post("/", app.createAppointmentHandler)
 			})
 		})
 
