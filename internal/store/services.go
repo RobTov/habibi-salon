@@ -55,6 +55,31 @@ func (s *ServicesStore) GetAll(ctx context.Context) ([]Services, error) {
 	return services, nil
 }
 
+func (s *ServicesStore) GetByID(ctx context.Context, serviceID int64) (*Services, error) {
+	query := `
+	SELECT id, name, description, price, is_active
+	FROM services WHERE id = $1;
+	`
+
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	var service Services
+	err := s.db.QueryRowContext(ctx, query, serviceID).Scan(
+		&service.ID,
+		&service.Name,
+		&service.Description,
+		&service.Price,
+		&service.IsActive,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &service, nil
+}
+
 func (s *ServicesStore) Create(ctx context.Context, service *Services) error {
 	query := `
 	INSERT INTO services (name, description, price)

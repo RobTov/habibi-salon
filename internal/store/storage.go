@@ -27,6 +27,7 @@ type Storage struct {
 	}
 	Services interface {
 		GetAll(context.Context) ([]Services, error)
+		GetByID(context.Context, int64) (*Services, error)
 		Create(context.Context, *Services) error
 		Delete(context.Context, int64) error
 	}

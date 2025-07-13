@@ -70,6 +70,11 @@ func (app *application) mount() http.Handler {
 				r.Get("/", app.getServiceHandler)
 				r.Post("/", app.createServiceHandler)
 			})
+
+			r.Route("/{serviceID}", func(r chi.Router) {
+				r.Use(app.servicesContextMiddleware)
+				r.Get("/", app.getServiceByIDHandler)
+			})
 		})
 	})
 
