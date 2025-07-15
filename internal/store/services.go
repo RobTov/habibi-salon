@@ -97,6 +97,33 @@ func (s *ServicesStore) Create(ctx context.Context, service *Services) error {
 	return nil
 }
 
+func (s *ServicesStore) Update(ctx context.Context, service *Services) error {
+	query := `
+	UPDATE services 
+	SET name = $1, description = $2, price = $3, is_active = $4
+	WHERE id = $5;
+	`
+
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	_, err := s.db.ExecContext(
+		ctx,
+		query,
+		service.Name,
+		service.Description,
+		service.Price,
+		service.IsActive,
+		service.ID,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (s *ServicesStore) Delete(ctx context.Context, serviceID int64) error {
 	query := `
 	DELETE FROM services WHERE id = $1;

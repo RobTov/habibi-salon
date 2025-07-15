@@ -73,6 +73,37 @@ func (app *application) createServiceHandler(w http.ResponseWriter, r *http.Requ
 	}
 }
 
+func (app *application) updateServiceHandler(w http.ResponseWriter, r *http.Request) {
+	service := getServiceFromCtx(r)
+
+	var payload CreateServicePayload
+	if err := readJSON(w, r, &payload); err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	if err := Validate.Struct(payload); err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	service.Name = payload.Name
+	service.Description = payload.Description
+	service.Price = payload.Price
+	service.IsActive = payload.IsActive
+
+	if err := app.store.Services.Update(r.Context(), service); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, service); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+}
+
 func (app *application) servicesContextMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		idParam := chi.URLParam(r, "serviceID")
