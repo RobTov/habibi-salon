@@ -74,6 +74,7 @@ func (app *application) mount() http.Handler {
 			r.Route("/{serviceID}", func(r chi.Router) {
 				r.Use(app.servicesContextMiddleware)
 				r.Get("/", app.getServiceByIDHandler)
+				r.Patch("/", app.updateServiceHandler)
 			})
 		})
 	})
