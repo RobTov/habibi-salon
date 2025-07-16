@@ -104,6 +104,23 @@ func (app *application) updateServiceHandler(w http.ResponseWriter, r *http.Requ
 
 }
 
+func (app *application) deleteServiceHandler(w http.ResponseWriter, r *http.Request) {
+	idParam := chi.URLParam(r, "serviceID")
+	id, err := strconv.ParseInt(idParam, 10, 64)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	err = app.store.Services.Delete(r.Context(), id)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
+
 func (app *application) servicesContextMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		idParam := chi.URLParam(r, "serviceID")
