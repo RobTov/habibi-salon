@@ -75,6 +75,7 @@ func (app *application) mount() http.Handler {
 				r.Use(app.servicesContextMiddleware)
 				r.Get("/", app.getServiceByIDHandler)
 				r.Patch("/", app.updateServiceHandler)
+				r.Delete("/", app.deleteServiceHandler)
 			})
 		})
 	})
