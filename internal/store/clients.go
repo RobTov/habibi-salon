@@ -37,6 +37,46 @@ func (s *ClientsStore) Create(ctx context.Context, client *Clients) error {
 	return nil
 }
 
+func (s *ClientsStore) GetAll(ctx context.Context) ([]Clients, error) {
+	query := `
+	SELECT id, name, email, phone, address, created_at
+	FROM clients
+	`
+
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	rows, err := s.db.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	clients := []Clients{}
+	for rows.Next() {
+		var c = Clients{}
+
+		err := rows.Scan(
+			&c.ID,
+			&c.Name,
+			&c.Email,
+			&c.Phone,
+			&c.Address,
+			&c.CreatedAt,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		clients = append(clients, c)
+
+	}
+
+	return clients, nil
+}
+
 func (s *ClientsStore) GetByID(ctx context.Context, clientID int64) (*Clients, error) {
 	query := `SELECT id, name, email, phone, address, created_at 
 	FROM clients WHERE id = $1;`
