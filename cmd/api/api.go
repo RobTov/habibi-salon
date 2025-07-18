@@ -63,6 +63,12 @@ func (app *application) mount() http.Handler {
 				r.Get("/", app.getClientHandler)
 				r.Post("/", app.createClientHandler)
 			})
+
+			r.Route("/{clientID}", func(r chi.Router) {
+				r.Use(app.clientsContextMiddleware)
+				r.Get("/", app.getClientByIDHandler)
+				r.Patch("/", app.updateClientHandler)
+			})
 		})
 
 		r.Route("/services", func(r chi.Router) {

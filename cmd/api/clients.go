@@ -33,6 +33,15 @@ func (app *application) getClientHandler(w http.ResponseWriter, r *http.Request)
 	}
 }
 
+func (app *application) getClientByIDHandler(w http.ResponseWriter, r *http.Request) {
+	client := getClientFromCtx(r)
+
+	if err := app.jsonResponse(w, http.StatusOK, client); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+}
+
 func (app *application) createClientHandler(w http.ResponseWriter, r *http.Request) {
 	var payload CreateClientPayload
 	if err := readJSON(w, r, &payload); err != nil {
