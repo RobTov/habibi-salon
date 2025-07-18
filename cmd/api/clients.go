@@ -1,9 +1,12 @@
 package main
 
 import (
+	"context"
 	"net/http"
+	"strconv"
 
 	"github.com/RobTov/habibi-salon/internal/store"
+	"github.com/go-chi/chi/v5"
 )
 
 type clientKey string
@@ -58,4 +61,32 @@ func (app *application) createClientHandler(w http.ResponseWriter, r *http.Reque
 
 func (app *application) updateClientHandler(w http.ResponseWriter, r *http.Request) {
 
+}
+
+func (app *application) clientsContextMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		idParam := chi.URLParam(r, "clientID")
+		id, err := strconv.ParseInt(idParam, 10, 64)
+
+		if err != nil {
+			app.internalServerError(w, r, err)
+			return
+		}
+
+		ctx := r.Context()
+
+		client, err := app.store.Clients.GetByID(ctx, id)
+		if err != nil {
+			app.internalServerError(w, r, err)
+			return
+		}
+
+		ctx = context.WithValue(ctx, clientCtx, client)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
+func getClientFromCtx(r *http.Request) *store.Clients {
+	client, _ := r.Context().Value(clientCtx).(*store.Clients)
+	return client
 }
