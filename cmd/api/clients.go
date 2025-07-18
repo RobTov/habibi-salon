@@ -6,6 +6,10 @@ import (
 	"github.com/RobTov/habibi-salon/internal/store"
 )
 
+type clientKey string
+
+const clientCtx clientKey = "client"
+
 type CreateClientPayload struct {
 	Name    string `json:"name" validate:"required,max=100"`
 	Email   string `json:"email" validate:"required,mail"`
@@ -14,7 +18,16 @@ type CreateClientPayload struct {
 }
 
 func (app *application) getClientHandler(w http.ResponseWriter, r *http.Request) {
-	// clients, err := app.store.Clients.Ge
+	clients, err := app.store.Clients.GetAll(r.Context())
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, clients); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
 }
 
 func (app *application) createClientHandler(w http.ResponseWriter, r *http.Request) {
@@ -41,5 +54,8 @@ func (app *application) createClientHandler(w http.ResponseWriter, r *http.Reque
 		app.internalServerError(w, r, err)
 		return
 	}
+}
+
+func (app *application) updateClientHandler(w http.ResponseWriter, r *http.Request) {
 
 }
