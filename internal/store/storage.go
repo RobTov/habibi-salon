@@ -20,6 +20,7 @@ type Storage struct {
 		Delete(context.Context, int64) error
 	}
 	Clients interface {
+		GetAll(context.Context) ([]Clients, error)
 		Create(context.Context, *Clients) error
 		GetByID(context.Context, int64) (*Clients, error)
 		Update(context.Context, *Clients) error
