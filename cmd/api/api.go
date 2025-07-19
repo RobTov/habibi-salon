@@ -68,6 +68,7 @@ func (app *application) mount() http.Handler {
 				r.Use(app.clientsContextMiddleware)
 				r.Get("/", app.getClientByIDHandler)
 				r.Patch("/", app.updateClientHandler)
+				r.Delete("/", app.deleteClientHandler)
 			})
 		})
 

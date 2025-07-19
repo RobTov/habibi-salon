@@ -72,6 +72,23 @@ func (app *application) updateClientHandler(w http.ResponseWriter, r *http.Reque
 
 }
 
+func (app *application) deleteClientHandler(w http.ResponseWriter, r *http.Request) {
+	idParam := chi.URLParam(r, "clientID")
+	id, err := strconv.ParseInt(idParam, 10, 64)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	err = app.store.Clients.Delete(r.Context(), id)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
+
 func (app *application) clientsContextMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		idParam := chi.URLParam(r, "clientID")
