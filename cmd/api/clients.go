@@ -69,7 +69,33 @@ func (app *application) createClientHandler(w http.ResponseWriter, r *http.Reque
 }
 
 func (app *application) updateClientHandler(w http.ResponseWriter, r *http.Request) {
+	client := getClientFromCtx(r)
 
+	var payload CreateClientPayload
+	if err := readJSON(w, r, &payload); err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	if err := Validate.Struct(payload); err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	client.Name = payload.Name
+	client.Email = payload.Email
+	client.Phone = payload.Phone
+	client.Address = payload.Address
+
+	if err := app.store.Clients.Update(r.Context(), client); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, client); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
 }
 
 func (app *application) deleteClientHandler(w http.ResponseWriter, r *http.Request) {
