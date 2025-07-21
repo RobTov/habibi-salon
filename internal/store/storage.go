@@ -37,7 +37,9 @@ type Storage struct {
 		GetAll(context.Context) ([]Products, error)
 		Create(context.Context, *Products) error
 	}
-	Stock interface{}
+	Stock interface {
+		GetAll(context.Context) ([]Stock, error)
+	}
 }
 
 func NewPostgresStorage(db *sql.DB) Storage {
