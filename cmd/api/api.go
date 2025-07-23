@@ -85,6 +85,12 @@ func (app *application) mount() http.Handler {
 				r.Delete("/", app.deleteServiceHandler)
 			})
 		})
+
+		r.Route("/stock", func(r chi.Router) {
+			r.Route("/", func(r chi.Router) {
+				r.Get("/", app.getStockHandler)
+			})
+		})
 	})
 
 	return r
