@@ -51,3 +51,20 @@ func (s *StockStore) GetAll(ctx context.Context) ([]Stock, error) {
 
 	return stocks, nil
 }
+
+func (s *StockStore) Create(ctx context.Context, stock *Stock) error {
+	query := `
+	INSERT INTO stock (product_id, service_id, quantity)
+	VALUES ($1, $2, $3);
+	`
+
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	_, err := s.db.ExecContext(ctx, query, stock.ProductID, stock.ServiceID, stock.Quantity)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

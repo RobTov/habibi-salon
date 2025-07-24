@@ -39,6 +39,7 @@ type Storage struct {
 	}
 	Stock interface {
 		GetAll(context.Context) ([]Stock, error)
+		Create(context.Context, *Stock) error
 	}
 }
 
