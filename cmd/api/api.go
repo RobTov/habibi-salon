@@ -89,6 +89,7 @@ func (app *application) mount() http.Handler {
 		r.Route("/stock", func(r chi.Router) {
 			r.Route("/", func(r chi.Router) {
 				r.Get("/", app.getStockHandler)
+				r.Post("/", app.createStockHandler)
 			})
 		})
 	})
