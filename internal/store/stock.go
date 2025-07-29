@@ -69,6 +69,23 @@ func (s *StockStore) Create(ctx context.Context, stock *Stock) error {
 	return nil
 }
 
+func (s *StockStore) Update(ctx context.Context, stock *Stock) error {
+	query := `
+	UPDATE stock 
+	SET product_id = $1, service_id = $2, quantity = $3
+	WHERE id = $4;
+	`
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	_, err := s.db.ExecContext(ctx, query, stock.ProductID, stock.ServiceID, stock.Quantity, stock.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (s *StockStore) Delete(ctx context.Context, stockID int64) error {
 	query := `
 	DELETE FROM stock WHERE id = $1;
