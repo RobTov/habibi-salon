@@ -52,6 +52,30 @@ func (s *StockStore) GetAll(ctx context.Context) ([]Stock, error) {
 	return stocks, nil
 }
 
+func (s *StockStore) GetByID(ctx context.Context, stockID int64) (*Stock, error) {
+	query := `
+	SELECT id, product_id, service_id, quantity
+	FROM stock WHERE id = $1;
+	`
+
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	var stock Stock
+	err := s.db.QueryRowContext(ctx, query, stockID).Scan(
+		&stock.ID,
+		&stock.ProductID,
+		&stock.ServiceID,
+		&stock.Quantity,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &stock, nil
+}
+
 func (s *StockStore) Create(ctx context.Context, stock *Stock) error {
 	query := `
 	INSERT INTO stock (product_id, service_id, quantity)
