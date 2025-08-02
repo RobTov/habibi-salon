@@ -91,6 +91,10 @@ func (app *application) mount() http.Handler {
 				r.Get("/", app.getStockHandler)
 				r.Post("/", app.createStockHandler)
 			})
+
+			r.Route("/{stockID}", func(r chi.Router) {
+				r.Use(app.stockContextMiddleware)
+			})
 		})
 	})
 

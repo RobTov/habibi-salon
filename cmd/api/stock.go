@@ -1,10 +1,17 @@
 package main
 
 import (
+	"context"
 	"net/http"
+	"strconv"
 
 	"github.com/RobTov/habibi-salon/internal/store"
+	"github.com/go-chi/chi/v5"
 )
+
+type stockKey string
+
+const stockCtx stockKey = "stock"
 
 type CreateStockPayload struct {
 	ProductID int64 `json:"product_id" validate:"required"`
@@ -53,4 +60,31 @@ func (app *application) createStockHandler(w http.ResponseWriter, r *http.Reques
 		app.internalServerError(w, r, err)
 		return
 	}
+}
+
+func (app *application) stockContextMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		idParam := chi.URLParam(r, "stockID")
+		id, err := strconv.ParseInt(idParam, 10, 64)
+		if err != nil {
+			app.internalServerError(w, r, err)
+			return
+		}
+
+		ctx := r.Context()
+
+		stock, err := app.store.Stock.GetByID(ctx, id)
+		if err != nil {
+			app.internalServerError(w, r, err)
+			return
+		}
+
+		ctx = context.WithValue(ctx, serviceCtx, stock)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
+func getStockFromCtx(r *http.Request) *store.Stock {
+	stock, _ := r.Context().Value(stockCtx).(*store.Stock)
+	return stock
 }
