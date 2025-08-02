@@ -32,6 +32,15 @@ func (app *application) getStockHandler(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+func (app *application) getStockByIDHandler(w http.ResponseWriter, r *http.Request) {
+	stock := getStockFromCtx(r)
+
+	if err := app.jsonResponse(w, http.StatusOK, stock); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+}
+
 func (app *application) createStockHandler(w http.ResponseWriter, r *http.Request) {
 	var payload CreateStockPayload
 	if err := readJSON(w, r, &payload); err != nil {
