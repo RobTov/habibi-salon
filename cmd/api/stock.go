@@ -71,6 +71,23 @@ func (app *application) createStockHandler(w http.ResponseWriter, r *http.Reques
 	}
 }
 
+func (app *application) deleteStockHandler(w http.ResponseWriter, r *http.Request) {
+	idParam := chi.URLParam(r, "stockID")
+	id, err := strconv.ParseInt(idParam, 10, 64)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	err = app.store.Stock.Delete(r.Context(), id)
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
+
 func (app *application) stockContextMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		idParam := chi.URLParam(r, "stockID")
