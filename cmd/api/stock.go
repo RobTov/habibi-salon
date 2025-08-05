@@ -71,6 +71,35 @@ func (app *application) createStockHandler(w http.ResponseWriter, r *http.Reques
 	}
 }
 
+func (app *application) updateStockHandler(w http.ResponseWriter, r *http.Request) {
+	stock := getStockFromCtx(r)
+
+	var payload CreateStockPayload
+	if err := readJSON(w, r, &payload); err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	if err := Validate.Struct(payload); err != nil {
+		app.badRequestResponse(w, r, err)
+		return
+	}
+
+	stock.ProductID = payload.ProductID
+	stock.ServiceID = payload.ServiceID
+	stock.Quantity = payload.Quantity
+
+	if err := app.store.Stock.Update(r.Context(), stock); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	if err := app.jsonResponse(w, http.StatusOK, stock); err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+}
+
 func (app *application) deleteStockHandler(w http.ResponseWriter, r *http.Request) {
 	idParam := chi.URLParam(r, "stockID")
 	id, err := strconv.ParseInt(idParam, 10, 64)
