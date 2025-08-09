@@ -4,3 +4,9 @@ export interface StockModel {
   service_id: number;
   quantity: number;
 }
+
+export interface ICreateStockModel {
+  product_id: number;
+  service_id: number;
+  quantity: number;
+}
