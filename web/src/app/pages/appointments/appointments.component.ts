@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
+import { AppointmentsModel } from '../../models/appointments.model';
+import { AppointmentsResource } from '../../services/api/appointments.resource';
 
 @Component({
   selector: 'app-appointments',
@@ -70,4 +77,16 @@ export class AppointmentsComponent {
       status: 'inactive',
     },
   ];
+
+  public appointments: AppointmentsModel[] = [];
+  public isLoading = signal<boolean>(true);
+  private appointmentsResource = inject(AppointmentsResource);
+
+  ngOnInit(): void {
+    this.appointmentsResource.get();
+    this.appointmentsResource.appointments.subscribe((appointments) => {
+      this.appointments = appointments;
+      this.isLoading.set(false);
+    });
+  }
 }
