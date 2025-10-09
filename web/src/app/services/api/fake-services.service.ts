@@ -74,7 +74,7 @@ export class FakeServicesService {
     if (!window.localStorage.getItem('services')) {
       this.setInitialServices()!;
     }
-    
+
     this.services.set(
       JSON.parse(
         window.localStorage.getItem('services')!
@@ -82,5 +82,18 @@ export class FakeServicesService {
     );
 
     return this.services();
+  }
+
+  public createService(newService: FakeServicesModel): void {
+    this.services.update(() => [...this.services(), newService]);
+    window.localStorage.setItem('services', JSON.stringify(this.services()));
+  }
+
+  public editService(serviceToEdit: FakeServicesModel): void {
+    const newServices = this.services().filter((service) => {
+      return service.id !== serviceToEdit.id;
+    });
+    this.services.update(() => [...newServices, serviceToEdit]);
+    window.localStorage.setItem('services', JSON.stringify(this.services()));
   }
 }
