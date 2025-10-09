@@ -53,7 +53,7 @@ func (app *application) mount() http.Handler {
 		r.Get("/health", app.healthCheckHandler)
 		r.Route("/appointments", func(r chi.Router) {
 			r.Route("/", func(r chi.Router) {
-				r.Get("", app.getAppointmentHandler)
+				r.Get("/", app.getAppointmentHandler)
 				r.Post("/", app.createAppointmentHandler)
 			})
 		})

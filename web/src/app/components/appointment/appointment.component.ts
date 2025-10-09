@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-appointment',
@@ -7,4 +9,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './appointment.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppointmentComponent { }
+export class AppointmentComponent {
+  private toastr = inject(ToastrService);
+  private router = inject(Router);
+
+  public reserve(): void {
+    this.toastr.success('Se ha realizado la cita correctamente.');
+    setTimeout(() => {
+      this.router.navigate(['/home']);
+    }, 300)
+  }
+}
