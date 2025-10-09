@@ -22,6 +22,7 @@
         <div class="w-full flex flex-col gap-2">
           <label class="font-semibold text-xs text-gray-400">Correo</label>
           <input
+            [(ngModel)]="email"
             class="border rounded-lg px-3 py-2 mb-5 text-sm w-full outline-none"
             placeholder="ejemplo@mail.com"
           />
@@ -38,6 +39,7 @@
       <div className="mt-5">
         <button
           class="py-1 px-8 bg-blue-500 hover:bg-blue-800 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg cursor-pointer select-none"
+          (click)="login()"
         >
           Login
         </button>

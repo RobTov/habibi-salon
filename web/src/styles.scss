@@ -1,5 +1,6 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import "ngx-toastr/toastr";
 
 .title-font {
   font-family: "Lobster Two", sans-serif;
@@ -73,13 +74,13 @@
 
 .background-i {
   position: relative;
-  background-image: url('/img/background-1.jpeg');
+  background-image: url("/img/background-1.jpeg");
   background-size: cover;
   background-position: center;
 }
 
 .background-i::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;

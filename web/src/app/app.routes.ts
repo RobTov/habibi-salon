@@ -32,4 +32,30 @@ export const routes: Routes = [
         (mod) => mod.AppointmentsComponent
       ),
   },
+  {
+    path: 'services',
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import(
+            './pages/services-page/services-list/services-list.component'
+          ).then((mod) => mod.ServicesListComponent),
+      },
+      {
+        path: 'new',
+        loadComponent: () =>
+          import(
+            './pages/services-page/services-create/services-create.component'
+          ).then((mod) => mod.ServicesCreateComponent),
+      },
+      {
+        path: 'edit/:id',
+        loadComponent: () =>
+          import(
+            './pages/services-page/services-edit/services-edit.component'
+          ).then((mod) => mod.ServicesEditComponent),
+      },
+    ],
+  },
 ];

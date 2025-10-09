@@ -24,9 +24,9 @@ export class AppComponent {
 
     // this.servicesResource.create(testService);
 
-    this.servicesResource.get();
-    this.servicesResource.services.subscribe((services) => {
-      console.log(services);
-    });
+    // this.servicesResource.get();
+    // this.servicesResource.services.subscribe((services) => {
+    //   console.log(services);
+    // });
   }
 }
