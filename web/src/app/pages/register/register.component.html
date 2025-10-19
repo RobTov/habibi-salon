@@ -1,0 +1,61 @@
+<div class="flex justify-center items-center min-h-screen bg-white">
+  <div class="w-full flex items-center justify-center">
+    <div class="w-3/4 max-w-md p-8 bg-white shadow-lg rounded-lg">
+      <h2 class="text-2xl font-bold text-blue-600 mb-6">Registrarse</h2>
+      <form>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm mb-2"> Nombre </label>
+          <input
+            type="text"
+            name="username"
+            placeholder="Ingrese su nombre"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm mb-2">Correo</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="Ingrese su correo"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm mb-2"> Contraseña </label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Ingrese su contraseña"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm mb-2">
+            Confirmar Contraseña
+          </label>
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirme su contraseña"
+            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <button
+          class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          Guardar
+        </button>
+      </form>
+
+      <p class="mt-6 text-sm text-center text-gray-600">
+        Tienes una cuenta?
+        <a routerLink="/login" class="text-blue-600 hover:underline"> Iniciar sesión </a>
+      </p>
+    </div>
+  </div>
+</div>
